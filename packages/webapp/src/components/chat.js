@@ -165,7 +165,7 @@ export class ChatInterface extends LitElement {
     this.isLoading = true;
     
     try {
-      // Simulate AI response (replace with real API call later)
+      // Call the local backend or an overridden API URL.
       const aiResponse = await this._apiCall (userQuery);
       
       // Add AI's response to the chat
@@ -178,16 +178,17 @@ export class ChatInterface extends LitElement {
       console.error('Error calling model:', error);
       this.messages = [
         ...this.messages,
-        { role: 'assistant', content: 'Sorry, I encountered an error. Please try again.' }
+        { role: 'assistant', content: `I could not reach the verification backend. Start the local backend in packages/webapi or set a valid API URL. Details: ${error?.message || 'unknown error'}` }
       ];
     } finally {
       this.isLoading = false;
     }
   }
 
-  // Simulate an AI response (placeholder for future integration)
+  // Call the backend and return the assistant reply text.
 async _apiCall(message) {
-  const res = await fetch("http://localhost:3001/chat", {
+  const apiBaseUrl = import.meta.env.VITE_WEBAPI_URL || 'http://localhost:3001';
+  const res = await fetch(`${apiBaseUrl}/chat`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ 
@@ -196,8 +197,13 @@ async _apiCall(message) {
       mode: this.chatMode // Send the selected mode to the server
     }),
   });
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`Backend returned ${res.status}: ${errorText || res.statusText}`);
+  }
+
   const data = await res.json();
-  return data;
+  return data.reply ?? data.message ?? '';
 }
 }
 
