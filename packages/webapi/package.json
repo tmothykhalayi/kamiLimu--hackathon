@@ -33,6 +33,7 @@
     "@azure/ai-projects": "^1.0.0-beta.8",
     "@azure/core-auth": "^1.9.0",
     "@azure/identity": "^4.10.2",
+    "@google/genai": "^2.10.0",
     "@langchain/openai": "^0.5.16",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",

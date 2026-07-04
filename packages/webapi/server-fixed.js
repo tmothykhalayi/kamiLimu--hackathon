@@ -5,35 +5,51 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import ModelClient from "@azure-rest/ai-inference";
+import { AzureKeyCredential } from "@azure/core-auth";
+import { GoogleGenAI } from "@google/genai";
 import { AgentService } from "./agentService.js";
-
-dotenv.config();
-
-const app = express();
-app.use(cors());
-app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const projectRoot = path.resolve(__dirname, '../..');
 const civicResourcesPath = path.join(projectRoot, 'data/health_resources.txt');
 
-// Initialize Azure AI Inference client
+dotenv.config({ path: path.join(__dirname, '.env') });
+dotenv.config({ path: path.join(projectRoot, '.env') });
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const azureModelName = process.env.DEPLOYMENT_NAME || "gpt-4.1_AIFoundry";
+
+// Initialize AI clients
 let azureClient;
+let geminiClient;
 try {
-  if (process.env.AZURE_INFERENCE_ENDPOINT && process.env.AZURE_INFERENCE_SDK_KEY) {
-    // Use fetch for Azure AI Inference API calls
-    azureClient = {
-      endpoint: process.env.AZURE_INFERENCE_ENDPOINT,
-      apiKey: process.env.AZURE_INFERENCE_SDK_KEY,
-      deploymentName: process.env.DEPLOYMENT_NAME || "gpt-4o"
-    };
+  if (process.env.GEMINI_API_KEY) {
+    geminiClient = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    console.log('Gemini client configured successfully');
+  }
+
+  const azureEndpoint =
+    process.env.AZURE_INFERENCE_ENDPOINT ??
+    process.env.AZURE_INFERENCE_SDK_ENDPOINT;
+
+  if (azureEndpoint && process.env.AZURE_INFERENCE_SDK_KEY) {
+    azureClient = new ModelClient(
+      azureEndpoint,
+      new AzureKeyCredential(process.env.AZURE_INFERENCE_SDK_KEY)
+    );
     console.log('Azure AI Inference client configured successfully');
-  } else {
-    console.error('Missing Azure AI Inference configuration');
+  }
+
+  if (!geminiClient && !azureClient) {
+    console.error('Missing AI model configuration');
   }
 } catch (error) {
-  console.error('Failed to configure Azure AI client:', error);
+  console.error('Failed to configure AI client:', error);
 }
 
 // Session memory storage
@@ -124,14 +140,14 @@ Remember: This information is for educational and verification support purposes 
 
 // Simple keyword-based retrieval for relevant content
 function retrieveRelevantContent(userMessage) {
-  if (!healthChunks || healthChunks.length === 0) {
+  if (!civicChunks || civicChunks.length === 0) {
     return [];
   }
 
   const query = userMessage.toLowerCase();
   const relevantChunks = [];
 
-  for (const chunk of healthChunks) {
+  for (const chunk of civicChunks) {
     const chunkLower = chunk.toLowerCase();
     
     // Calculate relevance score based on keyword matches
@@ -156,6 +172,55 @@ function retrieveRelevantContent(userMessage) {
     .map(item => item.chunk);
 }
 
+function normalizeMessageContent(content) {
+  if (typeof content === 'string') {
+    return content;
+  }
+
+  if (Array.isArray(content)) {
+    return content.map((part) => normalizeMessageContent(part)).join(' ');
+  }
+
+  if (content && typeof content === 'object') {
+    if (typeof content.text === 'string') {
+      return content.text;
+    }
+    return JSON.stringify(content);
+  }
+
+  return String(content ?? '');
+}
+
+function toAzureMessages(messages) {
+  return messages.map((msg) => ({
+    role: msg.role === 'system' ? 'developer' : msg.role,
+    content: normalizeMessageContent(msg.content),
+  }));
+}
+
+async function callGemini(messages) {
+  if (!geminiClient) {
+    throw new Error('Gemini client not configured');
+  }
+
+  const model = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+  const prompt = messages
+    .map((msg) => `${String(msg.role || 'user').toUpperCase()}: ${normalizeMessageContent(msg.content)}`)
+    .join('\n\n');
+
+  const response = await geminiClient.models.generateContent({
+    model,
+    contents: prompt,
+    config: {
+      temperature: 0.7,
+      maxOutputTokens: 800,
+    },
+  });
+
+  const content = response?.text?.trim();
+  return content || 'No response received';
+}
+
 // Get or create session memory
 function getSessionMemory(sessionId) {
   if (!sessionMemories[sessionId]) {
@@ -176,66 +241,57 @@ function saveToMemory(sessionId, userMessage, aiResponse) {
   }
 }
 
-// Call Azure AI Inference API
 async function callAzureAI(messages) {
   if (!azureClient) {
     throw new Error('Azure AI client not configured');
   }
 
-  // Try Azure AI Models endpoint (serverless inference)
-  const apiUrl = `https://models.inference.ai.azure.com/chat/completions`;
-  
-  console.log('Calling Azure AI Models at:', apiUrl);
-  
-  const response = await fetch(apiUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${azureClient.apiKey}`
+  const response = await azureClient.path('/chat/completions').post({
+    body: {
+      messages: toAzureMessages(messages),
+      model: azureModelName,
+      max_completion_tokens: 800,
+      temperature: 0.7,
     },
-    body: JSON.stringify({
-      messages: messages,
-      model: azureClient.deploymentName,
-      max_tokens: 800,
-      temperature: 0.7
-    })
   });
 
-  if (!response.ok) {
-    const errorData = await response.text();
-    console.error('Azure AI API error:', response.status, errorData);
-    
-    // If the first endpoint fails, try the deployment-specific endpoint
-    console.log('Trying deployment-specific endpoint...');
-    const deploymentUrl = `${azureClient.endpoint}/openai/deployments/${azureClient.deploymentName}/chat/completions?api-version=2024-02-15-preview`;
-    
-    const deploymentResponse = await fetch(deploymentUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'api-key': azureClient.apiKey
-      },
-      body: JSON.stringify({
-        messages: messages,
-        max_tokens: 800,
-        temperature: 0.7
-      })
-    });
-    
-    if (!deploymentResponse.ok) {
-      const deploymentErrorData = await deploymentResponse.text();
-      console.error('Deployment-specific API error:', deploymentResponse.status, deploymentErrorData);
-      throw new Error(`Both Azure AI endpoints failed. Last error: ${deploymentResponse.status} - ${deploymentErrorData}`);
-    }
-    
-    const deploymentData = await deploymentResponse.json();
-    console.log('Azure AI deployment response:', deploymentData);
-    return deploymentData.choices[0]?.message?.content || 'No response received';
+  if (response.status !== '200') {
+    const errorBody = JSON.stringify(response.body ?? {});
+    console.error('Azure AI API error:', response.status, errorBody);
+    throw new Error(`Azure AI API error: ${response.status} - ${errorBody}`);
   }
 
-  const data = await response.json();
-  console.log('Azure AI response:', data);
-  return data.choices[0]?.message?.content || 'No response received';
+  return response.body.choices[0]?.message?.content || 'No response received';
+}
+
+async function callAI(messages) {
+  const errors = [];
+
+  if (azureClient) {
+    try {
+      console.log('Calling Azure AI Inference...');
+      return await callAzureAI(messages);
+    } catch (error) {
+      console.error('Azure AI call failed:', error.message);
+      errors.push(error);
+    }
+  }
+
+  if (geminiClient) {
+    try {
+      console.log('Calling Gemini...');
+      return await callGemini(messages);
+    } catch (error) {
+      console.error('Gemini call failed:', error.message);
+      errors.push(error);
+    }
+  }
+
+  if (errors.length === 0) {
+    throw new Error('No AI provider configured');
+  }
+
+  throw new Error(errors.map((error) => error.message).join(' | '));
 }
 
 // Initialize agent service
@@ -266,8 +322,8 @@ app.post("/chat", async (req, res) => {
       }
     }
 
-    // Check if Azure AI client is available
-    if (!azureClient) {
+    // Check if at least one AI provider is available
+    if (!geminiClient && !azureClient) {
       const fallbackResponse = `I apologize, but the AI service is not properly configured. 
 
 For civic verification, I recommend:
@@ -328,10 +384,7 @@ ${sources.join('\n\n')}
       { role: "user", content: message }
     ];
 
-    console.log('Calling Azure AI Inference...');
-
-    // Call Azure AI Inference
-    const aiResponse = await callAzureAI(messages);
+    const aiResponse = await callAI(messages);
 
     console.log('AI response received:', aiResponse);
 
@@ -372,11 +425,14 @@ app.get('/health', (req, res) => {
     status: 'healthy',
     timestamp: new Date().toISOString(),
     service: 'Democracy x AI Backend',
+    provider: azureClient ? 'azure' : (geminiClient ? 'gemini' : 'none'),
     azureAI: azureClient ? 'connected' : 'disconnected',
+    gemini: geminiClient ? 'connected' : 'disconnected',
     environment: {
-      endpoint: process.env.AZURE_INFERENCE_ENDPOINT ? 'configured' : 'missing',
+      geminiModel: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
+      endpoint: (process.env.AZURE_INFERENCE_ENDPOINT ?? process.env.AZURE_INFERENCE_SDK_ENDPOINT) ? 'configured' : 'missing',
       apiKey: process.env.AZURE_INFERENCE_SDK_KEY ? 'configured' : 'missing',
-      deployment: process.env.DEPLOYMENT_NAME || 'gpt-4o'
+      deployment: azureModelName
     }
   });
 });
@@ -391,11 +447,14 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Democracy x AI backend running on port ${PORT}`);
   console.log(`Health check available at http://localhost:${PORT}/health`);
+  console.log(`Gemini status: ${geminiClient ? 'Connected' : 'Not configured'}`);
   console.log(`Azure AI status: ${azureClient ? 'Connected' : 'Not configured'}`);
   
-  if (!azureClient) {
-    console.log('\n⚠️  Azure AI not configured - chat will use fallback responses');
+  if (!geminiClient && !azureClient) {
+    console.log('\n⚠️  No AI provider configured - chat will use fallback responses');
     console.log('To enable AI responses, set these environment variables:');
+    console.log('- GEMINI_API_KEY');
+    console.log('- GEMINI_MODEL (optional)');
     console.log('- AZURE_INFERENCE_ENDPOINT');
     console.log('- AZURE_INFERENCE_SDK_KEY');
     console.log('- DEPLOYMENT_NAME');

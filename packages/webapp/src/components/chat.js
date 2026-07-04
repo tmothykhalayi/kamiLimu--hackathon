@@ -197,12 +197,21 @@ async _apiCall(message) {
       mode: this.chatMode // Send the selected mode to the server
     }),
   });
+  const responseText = await res.text();
+
   if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(`Backend returned ${res.status}: ${errorText || res.statusText}`);
+    try {
+      const data = JSON.parse(responseText);
+      if (data.reply) {
+        return data.reply;
+      }
+    } catch {
+      // Not JSON — fall through to error below.
+    }
+    throw new Error(`Backend returned ${res.status}: ${responseText || res.statusText}`);
   }
 
-  const data = await res.json();
+  const data = JSON.parse(responseText);
   return data.reply ?? data.message ?? '';
 }
 }
