@@ -18,7 +18,7 @@ import { badRequest, data, serviceUnavailable } from '../http-response.js';
 import { ollamaChatModel, ollamaEmbeddingsModel, faissStoreFolder } from '../constants.js';
 import { getAzureOpenAiTokenProvider, getCredentials, getUserId } from '../security.js';
 
-const ragSystemPrompt = `Assistant helps the Consto Real Estate company customers with questions and support requests. Be brief in your answers. Answer only plain text, DO NOT use Markdown.
+const ragSystemPrompt = `Assistant helps users verify political claims, images, and civic messages related to information integrity in Kenya. Be brief in your answers. Answer only plain text, DO NOT use Markdown.
 Answer ONLY with information from the sources below. If there isn't enough information in the sources, say you don't know. Do not generate answers that don't use the sources. If asking a clarifying question to the user would help, ask the question.
 If the user question is not in English, answer in the language used in the question.
 

@@ -1,7 +1,7 @@
-// Simplified agent service for healthcare assistant
+// Simplified agent service for civic verification support
 export class AgentService {
   constructor() {
-    // Simplified implementation for healthcare assistance
+    // Simplified implementation for civic verification assistance
     this.sessionContexts = {};
   }
 
@@ -10,7 +10,7 @@ export class AgentService {
     if (!this.sessionContexts[sessionId]) {
       this.sessionContexts[sessionId] = {
         conversationHistory: [],
-        healthTopics: []
+        civicTopics: []
       };
     }
 
@@ -23,8 +23,8 @@ export class AgentService {
       timestamp: new Date().toISOString()
     });
 
-    // Generate healthcare-focused response based on the message
-    let reply = this.generateHealthcareResponse(userMessage, context);
+    // Generate civic-focused response based on the message
+    let reply = this.generateCivicResponse(userMessage, context);
 
     // Add agent response to history
     context.conversationHistory.push({
@@ -39,50 +39,50 @@ export class AgentService {
     };
   }
 
-  generateHealthcareResponse(userMessage, context) {
+  generateCivicResponse(userMessage, context) {
     const message = userMessage.toLowerCase();
     
-    // Health-related keywords and responses
-    if (message.includes('diet') || message.includes('nutrition') || message.includes('food')) {
-      return `🥗 **Nutrition Guidance**: For a healthy diet, focus on eating a variety of fruits, vegetables, whole grains, and lean proteins. Limit processed foods and added sugars. 
+    // Civic-related keywords and responses
+    if (message.includes('claim') || message.includes('fact') || message.includes('verify')) {
+      return `🔎 **Claim Check Guidance**: Compare the claim against trusted sources, look for the original post or statement, and be cautious with screenshots or forwarded messages.
 
-**Important**: This is general guidance only. For personalized nutrition advice, especially if you have health conditions, please consult with a registered dietitian or your healthcare provider.`;
+**Important**: This is general verification guidance only. If the evidence is unclear, say so rather than guessing.`;
     }
     
-    if (message.includes('exercise') || message.includes('workout') || message.includes('fitness')) {
-      return `🏃‍♀️ **Exercise Recommendations**: Adults should aim for at least 150 minutes of moderate-intensity aerobic activity per week, plus muscle-strengthening activities twice a week.
+    if (message.includes('image') || message.includes('video') || message.includes('deepfake')) {
+      return `🧾 **Media Verification**: Check for mismatched text, odd shadows, recycled old clips, or other signs of manipulation. Reverse image search and source comparison can help.
 
-**Important**: Before starting any new exercise program, especially if you have health conditions or haven't been active, consult with your healthcare provider first.`;
+**Important**: A convincing image or video is not proof of truth. Treat synthetic media carefully.`;
     }
     
-    if (message.includes('sleep') || message.includes('tired') || message.includes('insomnia')) {
-      return `😴 **Sleep Health**: Most adults need 7-9 hours of quality sleep per night. Good sleep hygiene includes a consistent bedtime routine, avoiding screens before bed, and keeping your bedroom cool and dark.
+    if (message.includes('swahili') || message.includes('language') || message.includes('dialect')) {
+      return `🗣️ **Language Support**: Use simple Swahili, keep the answer short, and avoid jargon so the result is easy to understand on a phone.
 
-**Important**: If you're experiencing persistent sleep problems, this could indicate an underlying health issue. Please consult with a healthcare professional.`;
+**Important**: Different Kenyan dialects and local context matter, so test for clarity across regions.`;
     }
     
-    if (message.includes('stress') || message.includes('anxiety') || message.includes('mental health')) {
-      return `🧠 **Mental Health Support**: Stress management techniques include deep breathing, meditation, regular exercise, and maintaining social connections. It's important to recognize when stress becomes overwhelming.
+    if (message.includes('privacy') || message.includes('data') || message.includes('tracking')) {
+      return `🔐 **Privacy Reminder**: Avoid collecting unnecessary personal data and be careful with any civic tool that could expose users to surveillance.
 
-**Important**: If you're experiencing persistent stress, anxiety, or other mental health concerns, please reach out to a mental health professional or your healthcare provider. Mental health is just as important as physical health.`;
+**Important**: Low-data and privacy-aware design matters most for the people who need verification the most.`;
     }
 
-    if (message.includes('pain') || message.includes('hurt') || message.includes('ache')) {
-      return `⚠️ **Pain Management**: While some minor aches are normal, persistent or severe pain should be evaluated by a healthcare professional. In the meantime, rest, ice/heat therapy, and over-the-counter pain relievers may help with minor discomfort.
+    if (message.includes('misuse') || message.includes('abuse') || message.includes('suppression')) {
+      return `⚠️ **Misuse Risk**: A verification tool can be abused to suppress legitimate political speech if it flags content too aggressively.
 
-**Important**: This is not medical advice. For any concerning pain, especially chest pain, severe headaches, or sudden onset pain, seek immediate medical attention.`;
+**Important**: Keep the system careful, explain uncertainty, and avoid overclaiming.`;
     }
 
-    // Default healthcare response
-    return `🏥 **Healthcare Assistant**: I'm here to provide general health and wellness information. I can help with topics like nutrition, exercise, sleep, stress management, and general wellness.
+    // Default civic response
+    return `🏛️ **Democracy x AI Assistant**: I'm here to provide general information integrity support. I can help with verifying claims, checking media, and keeping explanations simple in Swahili.
 
 **Remember**: 
-- This information is for educational purposes only
-- Always consult healthcare professionals for medical advice
-- In emergencies, contact emergency services immediately
-- I cannot diagnose conditions or replace professional medical consultation
+- This information is for educational and verification support only
+- Always check important civic claims against trusted sources
+- If the evidence is unclear, say so
+- I cannot replace journalism, official guidance, or careful human judgment
 
-What specific health topic would you like to learn about?`;
+What civic claim would you like to verify?`;
   }
 
   // Clean up old sessions (optional - for memory management)

@@ -1,97 +1,279 @@
-# Healthcare & Wellness Resource Guide
+# Information Integrity Resource Guide
 
-## General Health Guidelines
+## What is Information Integrity?
 
-### Daily Wellness Basics
-- Get 7-9 hours of quality sleep each night
-- Drink 8-10 glasses of water daily
-- Aim for 150 minutes of moderate exercise per week
-- Eat a balanced diet with fruits, vegetables, whole grains, and lean proteins
-- Practice stress management techniques like meditation or deep breathing
+Information integrity is the ability to access, share, and act on information that is accurate, authentic, complete, and trustworthy.
 
-### Preventive Care
-- Schedule annual check-ups with your primary care physician
-- Keep up with recommended screenings (mammograms, colonoscopies, blood pressure checks)
-- Stay current with vaccinations
-- Perform regular self-examinations (breast, skin, testicular)
-- Maintain good oral hygiene with regular dental cleanings
+In a democratic society, information integrity enables citizens to make informed decisions, participate in civic processes, and hold leaders accountable. It is threatened by misinformation, disinformation, manipulated media, impersonation, and content presented without context.
 
-### Nutrition Guidelines
-- Fill half your plate with fruits and vegetables
-- Choose whole grains over refined grains
-- Include lean proteins like fish, poultry, beans, and nuts
-- Limit processed foods, added sugars, and saturated fats
-- Consider portion control and mindful eating practices
+Swahili Point of Consumption Check (SPCC) promotes information integrity by helping users verify civic information before they believe or share it.
 
-### Mental Health and Wellness
-- Practice mindfulness and meditation
-- Maintain social connections with family and friends
-- Engage in activities that bring joy and fulfillment
-- Seek professional help if experiencing persistent sadness, anxiety, or stress
-- Create healthy boundaries between work and personal life
+---
 
-### Exercise and Physical Activity
-- Include both cardio and strength training in your routine
-- Start slowly and gradually increase intensity
-- Find activities you enjoy to maintain consistency
-- Consider activities like walking, swimming, cycling, or dancing
-- Include flexibility and balance exercises, especially as you age
+# Core Principles
 
-### Common Health Conditions - General Information
+## Accuracy
+Information should be supported by evidence from trusted and verifiable sources.
 
-#### Hypertension (High Blood Pressure)
-- Often called the "silent killer" as it may have no symptoms
-- Can be managed through diet, exercise, and medication
-- Reduce sodium intake and maintain a healthy weight
-- Regular monitoring is essential
+## Authenticity
+Always verify that information comes from the genuine organization, author, or institution.
 
-#### Diabetes Prevention and Management
-- Maintain a healthy weight and exercise regularly
-- Monitor blood sugar levels if at risk or diagnosed
-- Follow a balanced diet with controlled carbohydrate intake
-- Take medications as prescribed by healthcare providers
+## Transparency
+When certainty is not possible, clearly communicate uncertainty instead of guessing.
 
-#### Heart Health
-- Regular exercise strengthens the heart muscle
-- Avoid smoking and limit alcohol consumption
-- Manage stress and get adequate sleep
-- Maintain healthy cholesterol levels through diet and medication if needed
+## Context
+Information should include enough context to prevent misleading interpretations.
 
-#### Mental Health Support
-- Depression and anxiety are common and treatable conditions
-- Don't hesitate to seek professional help
-- Consider therapy, counseling, or support groups
-- Medication may be helpful in conjunction with therapy
+## Accountability
+Encourage users to consult official institutions for important civic decisions.
 
-### Emergency Situations - When to Seek Immediate Care
-- Chest pain or pressure
-- Difficulty breathing or shortness of breath
-- Severe headache with vision changes
-- Signs of stroke (face drooping, arm weakness, speech difficulty)
-- Severe allergic reactions
-- Uncontrolled bleeding
-- Loss of consciousness
-- Severe abdominal pain
+---
 
-### Healthy Aging Tips
-- Stay physically and mentally active
-- Maintain social connections
-- Keep up with preventive care and screenings
-- Consider balance and fall prevention exercises
-- Discuss supplements and medications with healthcare providers
+# Types of False Information
 
-### Wellness Technology
-- Use fitness trackers to monitor activity levels
-- Consider health apps for medication reminders
-- Telehealth options for convenient consultations
-- Online resources for reliable health information
+## Misinformation
 
-### Important Reminders
-- Always consult with healthcare professionals for personalized advice
-- This information is for educational purposes only
-- Emergency situations require immediate medical attention
-- Regular check-ups are essential for preventive care
-- Mental health is just as important as physical health
+False or misleading information shared without the intention to cause harm.
 
-## Disclaimer
-This information is provided for educational purposes only and is not intended to replace professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of something you have read here. In case of a medical emergency, call your doctor or emergency services immediately.
+Example:
+Someone forwards an outdated election notice believing it is current.
+
+---
+
+## Disinformation
+
+False information deliberately created or shared to deceive people.
+
+Example:
+A fake government announcement designed to influence voters.
+
+---
+
+## Malinformation
+
+True information shared maliciously to cause harm by removing context or exposing private information.
+
+Example:
+Publishing someone's personal information to intimidate them politically.
+
+---
+
+## Manipulated Content
+
+Images, videos, or audio edited to create a false impression.
+
+Examples include:
+- Edited screenshots
+- AI-generated images
+- Deepfake videos
+- Synthetic voice recordings
+
+---
+
+# Civic Information Categories
+
+SPCC should recognize civic information related to:
+
+- Elections
+- Voter Registration
+- IEBC
+- Parliament
+- Senate
+- County Governments
+- Public Participation
+- Constitution
+- Bills and Laws
+- Government Services
+- Taxation
+- Public Finance
+- Land
+- Education
+- Health
+- Corruption
+- Human Rights
+- National Security
+
+---
+
+# Claim Checking Basics
+
+## Before You Share
+
+- Pause before sharing emotional or urgent content.
+- Identify the original source.
+- Check the publication date.
+- Verify the claim using official sources.
+- Compare multiple trusted sources.
+- Avoid relying on screenshots alone.
+- Be cautious with forwarded messages.
+
+---
+
+# Media Verification
+
+For images:
+
+- Perform reverse image searches.
+- Look for cropped images.
+- Check whether the image has appeared before.
+- Look for inconsistent shadows or lighting.
+
+For videos:
+
+- Watch carefully for edits.
+- Listen for unnatural voices.
+- Check whether audio matches lip movements.
+
+For AI-generated content:
+
+- Treat realistic-looking media cautiously.
+- Look for independent confirmation.
+
+---
+
+# Source Credibility
+
+Highest Trust
+
+- Government websites
+- Independent electoral bodies
+- Parliament
+- Judiciary
+- Kenya Gazette
+- Universities
+- Peer-reviewed research
+
+Moderate Trust
+
+- Established media houses
+- Verified journalists
+- Civil society organizations
+
+Low Trust
+
+- Anonymous forwards
+- Unverified social media accounts
+- Edited screenshots
+- Clickbait websites
+
+---
+
+# Swahili-First Support
+
+SPCC should:
+
+- Respond in simple Kiswahili.
+- Avoid technical language.
+- Explain civic terms clearly.
+- Support mixed Swahili-English queries.
+- Respect regional dialects.
+- Produce mobile-friendly responses.
+
+---
+
+# Responsible Computing
+
+SPCC must:
+
+- Never invent facts.
+- Clearly indicate uncertainty.
+- Protect user privacy.
+- Avoid collecting unnecessary personal information.
+- Avoid political bias.
+- Avoid favouring political parties or candidates.
+- Never encourage censorship.
+- Support informed decision-making.
+- Explain why a claim is verified or unverified.
+
+---
+
+# Verification Workflow
+
+Whenever a civic claim is submitted:
+
+1. Identify the claim.
+2. Determine the civic category.
+3. Check trusted sources.
+4. Assess confidence.
+5. Explain the reasoning.
+6. Provide official references.
+7. Recommend next steps.
+
+---
+
+# Trusted Kenyan Sources
+
+Election Information
+- Independent Electoral and Boundaries Commission (IEBC)
+
+Laws
+- Kenya Law
+
+Government Notices
+- Kenya Gazette
+
+Parliament
+- Parliament of Kenya
+
+Judiciary
+- Judiciary of Kenya
+
+Anti-Corruption
+- Ethics and Anti-Corruption Commission (EACC)
+
+Public Data
+- Kenya National Bureau of Statistics (KNBS)
+
+Fact Checking
+
+- Africa Check
+- AFP Fact Check
+
+---
+
+# Response Format
+
+Every response should include:
+
+## Claim
+
+The civic claim submitted.
+
+## Category
+
+Election, Parliament, Law, Land, Finance, etc.
+
+## Verdict
+
+- Verified
+- Likely True
+- Misleading
+- False
+- Unverified
+- Insufficient Evidence
+
+## Confidence
+
+Low
+Medium
+High
+
+## Explanation
+
+Explain the reasoning in plain Swahili.
+
+## Trusted Sources
+
+List the official sources consulted.
+
+## Recommendation
+
+Advise users to confirm important civic information with official institutions before acting or sharing.
+
+---
+
+# Disclaimer
+
+SPCC is an educational AI assistant designed to support information verification at the point of consumption. It does not replace official government communication, professional journalism, legal advice, or independent human judgment.
+
+Users should always verify important civic information using trusted primary sources before making decisions or sharing content.

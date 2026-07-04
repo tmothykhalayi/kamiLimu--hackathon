@@ -1,34 +1,32 @@
-# 🏥 HealthAI Assistant - Your Personal Health & Wellness Companion
+# Democracy x AI - Information Integrity Assistant
 
-A production-ready AI-powered healthcare and wellness assistant built with Azure AI, LangChain, and modern web technologies. This application provides evidence-based health information, wellness guidance, and personalized recommendations while maintaining strict medical disclaimers and encouraging professional healthcare consultation.
+An AI-powered civic information assistant built with Azure AI, LangChain, and modern web technologies. This project focuses on information integrity: helping young Kenyan social media users verify political claims, image content, and election-related messages in simple Swahili before they re-share them.
 
-## 🎯 **Problem Solved**
+## 🎯 **Problem Addressed**
 
-**Healthcare Information Gap**: People need reliable, accessible health guidance but struggle to navigate complex medical information and don't have 24/7 access to healthcare professionals for general wellness questions.
-
-**Our Solution**: An AI-powered wellness assistant that provides evidence-based health information, wellness tips, and guidance while always emphasizing the importance of professional medical consultation.
+Young first-time voters and civic participants need a fast way to check whether political content is trustworthy, but existing fact-checking flows are mostly English-first, web-based, and reactive. This project reframes the sample into a Democracy x AI tool that supports point-of-consumption verification.
 
 ## ✨ **Features**
 
 ### 🤖 **Dual Chat Modes**
-- **Health Assistant**: General health and wellness information with RAG-powered responses
-- **Wellness Coach**: Personalized wellness guidance and lifestyle recommendations
+- **Basic Verification**: Fast claim-checking support for political posts and rumors
+- **Guided Review**: More detailed analysis for suspicious text, images, or links
 
 ### 📚 **Knowledge Base Integration**
-- Evidence-based health resources
-- Nutrition and exercise guidelines
-- Mental health and wellness information
-- Preventive care recommendations
+- Information integrity and election literacy resources
+- Fact-checking guidance and source evaluation tips
+- Swahili-first civic support copy
+- Responsible computing reminders for bias, misuse, and privacy
 
 ### 🛡️ **Safety First**
-- Built-in medical disclaimers
-- Emergency situation guidance
-- Clear boundaries between general information and medical advice
-- Encourages professional healthcare consultation
+- Clear boundaries around uncertain claims
+- Abuse-resistance language to discourage suppression of legitimate speech
+- Low-data, mobile-first wording for broad access
+- Respect for Kenyan language and regional context
 
-### 🎨 **Modern Healthcare UI**
-- Medical-themed gradient design
-- Intuitive chat interface
+### 🎨 **Modern Civic UI**
+- Clean civic-themed interface
+- Intuitive chat flow for quick verification
 - Mobile-responsive layout
 - Accessible design principles
 
@@ -36,30 +34,30 @@ A production-ready AI-powered healthcare and wellness assistant built with Azure
 
 I chose the **Serverless GenAI assistant with LangChain** template because:
 
-1. **Serverless Architecture**: Perfect for healthcare applications that need to scale based on demand
-2. **LangChain Integration**: Enables sophisticated RAG implementation for medical information retrieval
+1. **Serverless Architecture**: Useful for a verification assistant that may see bursty traffic around civic moments
+2. **LangChain Integration**: Supports retrieval from trusted civic sources and fact-check guidance
 3. **Production-Ready**: Comes with Azure infrastructure and deployment configuration
-4. **Extensible**: Easy to customize and add healthcare-specific features
+4. **Extensible**: Easy to customize for multilingual civic information workflows
 
 ## 🛠️ **Customizations Made**
 
 ### Backend Transformations
-- **Health-Focused System Prompts**: Customized AI prompts for healthcare guidance with medical disclaimers
-- **Medical Knowledge Base**: Replaced employee handbook with comprehensive health resources
-- **Safety Guardrails**: Added healthcare-specific safety measures and disclaimers
-- **Wellness Modes**: Implemented dual chat modes for different types of health guidance
+- **Civic System Prompts**: Reframed responses around information integrity, claim checking, and careful uncertainty handling
+- **Democracy Knowledge Base**: Replaced the old sample content with election integrity and fact-checking resources
+- **Safety Guardrails**: Added language to reduce misuse against legitimate political speech
+- **Verification Modes**: Implemented modes for quick checks and deeper review
 
 ### Frontend Enhancements
-- **Healthcare Theme**: Medical gradient design with calming blue and green colors
-- **Intuitive Labels**: Changed from "Employee Handbook" to "Health Resources"
-- **Safety Disclaimers**: Prominent medical disclaimers and emergency guidance
-- **Responsive Design**: Optimized for both desktop and mobile healthcare access
+- **Civic Theme**: Updated the app identity toward Democracy x AI
+- **Intuitive Labels**: Changed the sample language to fit verification and information integrity
+- **Safety Disclaimers**: Prominent reminders about uncertainty and responsible use
+- **Responsive Design**: Optimized for mobile-first civic use
 
 ### Infrastructure & Deployment
-- **Azure AI Integration**: Leveraged Azure OpenAI for reliable, scalable AI responses
-- **RAG Implementation**: Intelligent retrieval of relevant health information
-- **Session Management**: Maintains conversation context for personalized guidance
-- **Security**: Follows Azure best practices for healthcare data handling
+- **Azure AI Integration**: Leveraged Azure AI for scalable assistant responses
+- **RAG Implementation**: Retrieval grounded in trusted civic content
+- **Session Management**: Maintains conversation context for follow-up verification
+- **Security**: Designed around responsible computing and privacy-aware usage
 
 ## 🏃‍♂️ **Quick Start**
 
@@ -97,13 +95,13 @@ azd auth login
 azd up
 ```
 
-## ⚠️ **Important Medical Disclaimers**
+## ⚠️ **Important Civic Disclaimers**
 
-- **This application provides general health information only**
-- **Not a substitute for professional medical advice, diagnosis, or treatment**
-- **Always consult healthcare providers for medical concerns**
-- **In emergencies, contact emergency services immediately (911 in the US)**
-- **The AI responses are for educational purposes and should not replace medical consultation**
+- **This application provides general information integrity support only**
+- **Not a substitute for journalism, official electoral guidance, or legal advice**
+- **Always verify critical claims with trusted, primary sources**
+- **In urgent civic safety situations, follow official guidance from the appropriate authorities**
+- **The AI responses are for educational purposes and should not be used to suppress legitimate political speech**
 
 ## 📸 **Screenshots**
 
@@ -115,11 +113,11 @@ azd up
 
 ## 🔮 **Future Enhancements**
 
-- **Symptom Checker**: Basic symptom assessment with clear medical disclaimers
-- **Health Tracking**: Integration with fitness trackers and health apps
-- **Multilingual Support**: Health information in multiple languages
-- **Accessibility Features**: Enhanced support for users with disabilities
-- **Telemedicine Integration**: Connect users with real healthcare providers
+- **Claim Scanner**: Scan screenshots, captions, and forwarded messages
+- **WhatsApp-Friendly Flow**: Lightweight verification shared through familiar channels
+- **Multilingual Support**: Swahili and other Kenyan language support
+- **Accessibility Features**: Enhanced support for users with low literacy and limited data
+- **Source Comparison**: Side-by-side trust signals for civic claims
 
 ## 📄 **License**
 

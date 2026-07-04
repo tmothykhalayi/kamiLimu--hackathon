@@ -16,7 +16,7 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const projectRoot = path.resolve(__dirname, '../..');
-const healthResourcesPath = path.join(projectRoot, 'data/health_resources.txt');
+const civicResourcesPath = path.join(projectRoot, 'data/health_resources.txt');
 
 // Initialize Azure AI Inference client
 let azureClient;
@@ -39,59 +39,52 @@ try {
 // Session memory storage
 const sessionMemories = {};
 
-// Health resources storage
-let healthText = null;
-let healthChunks = [];
+// Civic resources storage
+let civicText = null;
+let civicChunks = [];
 const CHUNK_SIZE = 800;
 
-// Load health resources from text file
-async function loadHealthResources() {
-  if (healthText) return healthText;
+// Load civic resources from text file
+async function loadCivicResources() {
+  if (civicText) return civicText;
 
   try {
-    if (!fs.existsSync(healthResourcesPath)) {
-      console.warn('Health resources file not found at:', healthResourcesPath);
+    if (!fs.existsSync(civicResourcesPath)) {
+      console.warn('Civic resources file not found at:', civicResourcesPath);
       
-      // Create default health resources if file doesn't exist
-      const defaultHealthContent = `
-# Basic Health Guidelines
+      // Create default civic resources if file doesn't exist
+      const defaultCivicContent = `
+# Information Integrity Starter Guide
 
-## General Wellness
-- Maintain a balanced diet with plenty of fruits and vegetables
-- Stay hydrated by drinking 8-10 glasses of water daily
-- Get 7-9 hours of quality sleep each night
-- Exercise regularly (at least 150 minutes of moderate activity per week)
-- Manage stress through relaxation techniques
+## Claim Checking Basics
+- Pause before resharing a political claim or viral post
+- Look for the original source, not only the forwarded copy
+- Compare the claim against trusted fact-checking or official sources
+- Watch for edited screenshots, cropped posts, or missing context
+- Treat emotional or urgent language as a reason to verify, not a reason to react
 
-## Nutrition Basics
-- Eat a variety of colorful fruits and vegetables
-- Choose whole grains over refined grains
-- Include lean proteins in your meals
-- Limit processed foods and added sugars
-- Control portion sizes
+## Media Verification Tips
+- Check whether the image or video appears in multiple credible sources
+- Look for signs of manipulation, mismatched shadows, or odd text overlays
+- Use reverse image search where possible
+- Be careful with AI-generated faces, voices, and synthetic clips
+- Remember that a convincing format is not proof of truth
 
-## Physical Activity
-- Aim for at least 30 minutes of moderate exercise most days
-- Include both cardio and strength training
-- Take breaks from sitting every hour
-- Use stairs instead of elevators when possible
-- Find activities you enjoy to stay motivated
+## Swahili-First Civic Support
+- Use simple Swahili to explain the result clearly
+- Avoid technical jargon that ordinary users cannot act on
+- Respect Kenyan dialect differences and local political context
+- Keep explanations short enough to read on a phone
+- Support users who have limited data or low literacy
 
-## Mental Health
-- Practice mindfulness or meditation
-- Stay connected with friends and family
-- Seek professional help when needed
-- Maintain work-life balance
-- Engage in hobbies and activities you enjoy
+## Responsible Computing Notes
+- Avoid collecting unnecessary personal data
+- Avoid outputs that could be used to suppress legitimate political speech
+- Flag uncertainty clearly instead of pretending to be certain
+- Keep the tool helpful for verification, not persuasion
+- Design for fairness across regions and communities
 
-## Preventive Care
-- Schedule regular check-ups with your healthcare provider
-- Stay up to date with vaccinations
-- Get recommended screenings based on age and risk factors
-- Practice good hygiene habits
-- Protect your skin from sun damage
-
-Remember: This information is for educational purposes only. Always consult with qualified healthcare professionals for personalized medical advice.
+Remember: This information is for educational and verification support purposes only. Always confirm important civic claims using trusted primary sources.
 `;
       
       // Ensure the data directory exists
@@ -100,32 +93,32 @@ Remember: This information is for educational purposes only. Always consult with
         fs.mkdirSync(dataDir, { recursive: true });
       }
       
-      fs.writeFileSync(healthResourcesPath, defaultHealthContent);
-      console.log('Created default health resources file');
-      healthText = defaultHealthContent;
+      fs.writeFileSync(civicResourcesPath, defaultCivicContent);
+      console.log('Created default civic resources file');
+      civicText = defaultCivicContent;
     } else {
-      healthText = fs.readFileSync(healthResourcesPath, 'utf-8');
+      civicText = fs.readFileSync(civicResourcesPath, 'utf-8');
     }
     
     // Split into chunks for better retrieval
     let currentChunk = "";
-    const words = healthText.split(/\s+/);
+    const words = civicText.split(/\s+/);
 
     for (const word of words) {
       if ((currentChunk + " " + word).length <= CHUNK_SIZE) {
         currentChunk += (currentChunk ? " " : "") + word;
       } else {
-        healthChunks.push(currentChunk);
+        civicChunks.push(currentChunk);
         currentChunk = word;
       }
     }
-    if (currentChunk) healthChunks.push(currentChunk);
+    if (currentChunk) civicChunks.push(currentChunk);
     
-    console.log(`Loaded health resources: ${healthChunks.length} chunks`);
-    return healthText;
+    console.log(`Loaded civic resources: ${civicChunks.length} chunks`);
+    return civicText;
   } catch (error) {
-    console.error('Error loading health resources:', error);
-    return "Error loading health resources.";
+    console.error('Error loading civic resources:', error);
+    return "Error loading civic resources.";
   }
 }
 
@@ -277,12 +270,12 @@ app.post("/chat", async (req, res) => {
     if (!azureClient) {
       const fallbackResponse = `I apologize, but the AI service is not properly configured. 
 
-For health information, I recommend:
-- Consulting with your healthcare provider
-- Visiting reputable health websites like CDC.gov or WHO.int
-- Calling emergency services for urgent medical concerns
+For civic verification, I recommend:
+- Checking trusted fact-checking sources
+- Comparing the claim against official or primary sources
+- Being cautious with forwarded messages and edited media
 
-**Medical Disclaimer:** This AI assistant is not a substitute for professional medical advice, diagnosis, or treatment.`;
+**Civic Disclaimer:** This AI assistant is not a substitute for journalism, official guidance, or your own careful judgment.`;
 
       return res.json({
         reply: fallbackResponse,
@@ -293,9 +286,9 @@ For health information, I recommend:
 
     let sources = [];
     
-    // Load health resources if using RAG
+    // Load civic resources if using RAG
     if (useRAG) {
-      await loadHealthResources();
+      await loadCivicResources();
       sources = retrieveRelevantContent(message);
     }
 
@@ -304,29 +297,29 @@ For health information, I recommend:
 
     // Prepare system prompt based on RAG usage
     const systemMessage = useRAG && sources.length > 0
-      ? `You are HealthAI Assistant, a knowledgeable Healthcare & Wellness AI companion. Use the provided evidence-based health information to answer questions. Always include appropriate disclaimers about consulting healthcare professionals for medical concerns.
+      ? `You are a Democracy x AI verification assistant. Use the provided civic and information integrity resources to answer questions. Always explain uncertainty clearly and avoid overclaiming.
 
-IMPORTANT MEDICAL DISCLAIMERS:
-- This information is for educational purposes only
-- Not a substitute for professional medical advice, diagnosis, or treatment
-- Always consult qualified healthcare providers for medical concerns
-- In medical emergencies, contact emergency services immediately
-- Individual health situations vary - personalized medical advice requires professional consultation
+    IMPORTANT RESPONSIBLE COMPUTING GUIDANCE:
+    - This information is for educational and verification support purposes only
+    - Not a substitute for journalism, official election guidance, or legal advice
+    - Avoid language that could be used to suppress legitimate political speech
+    - If the evidence is insufficient, say so clearly
+    - Keep the response concise and usable on mobile devices
 
-HEALTH RESOURCES:
+    CIVIC RESOURCES:
 ${sources.join('\n\n')}
 
-Provide helpful, accurate information while emphasizing the importance of professional medical consultation when appropriate. Be empathetic and supportive in your responses.`
-      : `You are HealthAI Assistant, a helpful Healthcare & Wellness AI companion. Provide evidence-based health and wellness information while always including appropriate medical disclaimers.
+    Provide helpful, accurate information while keeping the answer simple, factual, and careful about uncertainty.`
+      : `You are a Democracy x AI verification assistant. Provide evidence-based civic information and misinformation guidance while keeping the response concise and respectful.
 
-IMPORTANT MEDICAL DISCLAIMERS:
-- This information is for educational purposes only
-- Not a substitute for professional medical advice, diagnosis, or treatment
-- Always consult qualified healthcare providers for medical concerns
-- In medical emergencies, contact emergency services immediately
-- Individual health situations vary - personalized medical advice requires professional consultation
+    IMPORTANT RESPONSIBLE COMPUTING GUIDANCE:
+    - This information is for educational and verification support purposes only
+    - Not a substitute for journalism, official election guidance, or legal advice
+    - Avoid language that could be used to suppress legitimate political speech
+    - If the evidence is insufficient, say so clearly
+    - Keep the response concise and usable on mobile devices
 
-Focus on general wellness, healthy lifestyle tips, preventive care information, and always encourage professional medical consultation for specific health concerns.`;
+    Focus on claim verification, source comparison, civic literacy, and careful handling of uncertain or manipulated media.`;
 
     // Build messages array
     const messages = [
@@ -354,15 +347,15 @@ Focus on general wellness, healthy lifestyle tips, preventive care information, 
   } catch (error) {
     console.error('Error in chat endpoint:', error);
 
-    // Healthcare-appropriate fallback response
+    // Civic-appropriate fallback response
     const fallbackResponse = `I apologize, but I'm experiencing technical difficulties right now. 
 
-For immediate medical concerns, please:
-- Contact your healthcare provider
-- Call emergency services if urgent
-- Visit reputable health websites like CDC.gov or WHO.int
+  For civic verification, please:
+  - Compare the claim against trusted sources
+  - Be careful with forwarded or edited media
+  - Check official statements where possible
 
-**Medical Disclaimer:** This AI assistant is not a substitute for professional medical advice, diagnosis, or treatment.`;
+  **Civic Disclaimer:** This AI assistant is not a substitute for journalism, official guidance, or careful verification.`;
 
     res.status(500).json({
       error: 'Failed to process message',
@@ -378,7 +371,7 @@ app.get('/health', (req, res) => {
   res.json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
-    service: 'HealthAI Assistant Backend',
+    service: 'Democracy x AI Backend',
     azureAI: azureClient ? 'connected' : 'disconnected',
     environment: {
       endpoint: process.env.AZURE_INFERENCE_ENDPOINT ? 'configured' : 'missing',
@@ -396,7 +389,7 @@ app.get('/documents', (req, res) => {
 // Start server
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`HealthAI Assistant backend running on port ${PORT}`);
+  console.log(`Democracy x AI backend running on port ${PORT}`);
   console.log(`Health check available at http://localhost:${PORT}/health`);
   console.log(`Azure AI status: ${azureClient ? 'Connected' : 'Not configured'}`);
   

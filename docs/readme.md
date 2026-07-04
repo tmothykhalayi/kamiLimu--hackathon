@@ -17,15 +17,15 @@ description: Build your own serverless AI Chat with Retrieval-Augmented-Generati
 
 <!-- Learn samples onboarding: https://review.learn.microsoft.com/en-us/help/contribute/samples/process/onboarding?branch=main -->
 <!-- prettier-ignore -->
-This sample shows how to build a serverless AI chat experience with Retrieval-Augmented Generation using [LangChain.js](https://js.langchain.com/) and Azure. The application is hosted on [Azure Static Web Apps](https://learn.microsoft.com/azure/static-web-apps/overview) and [Azure Functions](https://learn.microsoft.com/azure/azure-functions/functions-overview?pivots=programming-language-javascript), with [Azure Cosmos DB for NoSQL](https://learn.microsoft.com/azure/cosmos-db/nosql/vector-search) as the vector database. You can use it as a starting point for building more complex AI applications.
+This sample shows how to build a serverless AI chat experience with Retrieval-Augmented Generation using [LangChain.js](https://js.langchain.com/) and Azure. The application is hosted on [Azure Static Web Apps](https://learn.microsoft.com/azure/static-web-apps/overview) and [Azure Functions](https://learn.microsoft.com/azure/azure-functions/functions-overview?pivots=programming-language-javascript), with [Azure Cosmos DB for NoSQL](https://learn.microsoft.com/azure/cosmos-db/nosql/vector-search) as the vector database. You can use it as a starting point for building more complex civic AI applications.
 
 ![Animation showing the chat app in action](./images/demo.gif)
 
 ## Overview
 
-Building AI applications can be complex and time-consuming, but using LangChain.js and Azure serverless technologies allows to greatly simplify the process. This application is a chatbot that uses a set of enterprise documents to generate responses to user queries.
+Building AI applications can be complex and time-consuming, but using LangChain.js and Azure serverless technologies allows to greatly simplify the process. This application is a civic verification assistant that uses a set of democracy and information integrity resources to generate responses to user queries.
 
-We provide sample data to make this sample ready to try, but feel free to replace it with your own. We use a fictitious company called _Contoso Real Estate_, and the experience allows its customers to ask support questions about the usage of its products. The sample data includes a set of documents that describes its terms of service, privacy policy and a support guide.
+We provide sample data to make this sample ready to try, but feel free to replace it with your own. The demo content is oriented around Democracy x AI, with the experience allowing users to ask questions about political claims, misinformation, and information integrity. The sample data includes resources about fact-checking, responsible AI use, and civic media literacy.
 
 ![Application architecture](./images/architecture.drawio.png)
 
