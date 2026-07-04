@@ -1,0 +1,47 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.texts {
+  margin-bottom: 20px;
+}
+
+.texts h2 {
+  color: #333;
+}
+
+.texts p {
+  color: #666;
+}
+
+.texts img {
+  margin-right: 10px;
+}
+
+.backpacks {
+  margin-bottom: 20px;
+}
+
+.backpacks h2 {
+  color: #333;
+}
+
+.backpacks p {
+  color: #666;
+}
+
+.backpacks img {
+  margin-right: 10px;
+}
+
+.hiking-clothing {
+  margin-bottom: 20px;
+}
+
+.hiking-clothing h2 {
+  color: #333;
+}
+
+.hiking-clothing p {
+  color: #666;
+}
